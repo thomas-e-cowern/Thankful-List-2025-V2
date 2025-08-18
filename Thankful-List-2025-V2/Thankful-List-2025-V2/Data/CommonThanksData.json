@@ -44,5 +44,45 @@
         "fresh air",
         "oceans",
         "mountains"
+    ],
+    "Everyday “Small” Things": [
+      "A good night’s sleep",
+      "Clean sheets, a hot shower, or fresh clothes",
+      "A cup of coffee or tea in the morning",
+      "Wi-Fi and electricity we often take for granted",
+      "The smell of rain or fresh-baked bread"
+    ],
+    "Inner Strengths": [
+      "Resilience after tough times",
+      "The ability to learn from mistakes",
+      "A sense of humor that lightens heavy days",
+      "Curiosity and creativity",
+      "Emotional intelligence and self-awareness"
+    ],
+    "Life Circumstances": [
+      "Access to education and information",
+      "The ability to vote or have a voice",
+      "Living in a time with advanced medicine and technology",
+      "Relative peace compared to war-torn places",
+      "Opportunities for travel or cultural exchange"
+    ],
+    "Human Connections (Beyond the Obvious)": [
+      "Strangers who smile or hold a door open",
+      "Mentors who gave advice at just the right moment",
+      "Past relationships (even painful ones) that taught valuable lessons",
+      "Neighbors and community helpers who quietly support us",
+      "Someone remembering your name or story"
+    ],
+    "Moments & Intangibles": [
+      "Silence when you need it",
+      "Music that stirs emotions",
+      "Sunrises, sunsets, and stargazing",
+      "Laughter that makes your stomach hurt",
+      "Memories that bring warmth even years later"
+    ],
+    "Gratitude for Challenges": [
+      "Failures that redirected life for the better",
+      "Hard times that built strength and empathy",
+      "The contrast that makes us appreciate joy more deeply"
     ]
 }
