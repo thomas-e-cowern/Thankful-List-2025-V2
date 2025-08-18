@@ -18,53 +18,85 @@ struct HomeView: View {
     var body: some View {
         NavigationStack(path: $path) {
             ZStack {
-                ScrollView { // handles smaller screens gracefully
-                    VStack(spacing: 24) {
+                // Soft background
+                LinearGradient(
+                    colors: [Color(.systemBackground), Color(.secondarySystemBackground)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
+
+                ScrollView {
+                    VStack(spacing: 20) {
                         // App mark
                         Image("Thanks")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 100, height: 100)
+                            .frame(width: 96, height: 96)
                             .accessibilityLabel("Thankful List logo")
 
                         // Headline
                         Text("Welcome to the Grateful List!")
-                            .font(.title)
-                            .fontWeight(.bold)
+                            .font(.largeTitle.bold())
                             .multilineTextAlignment(.center)
 
                         // Subtitle / explainer
-                        Text("The Grateful List helps you track the people, places, experiences, and things you’re grateful for.")
-                            .font(.body)
+                        Text("Track the people, places, experiences, and things you’re grateful for — big or small.")
+                            .font(.callout)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
 
-                        // Call to action
-                        VStack(spacing: 12) {
-                            Text("Not sure where to start? Check out the info below.")
+                        // Focused content card
+                        VStack(spacing: 16) {
+                            Text("Not sure where to start?")
+                                .font(.headline)
+                                .multilineTextAlignment(.center)
+
+                            Text("Tap below to see common examples to spark ideas.")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)
 
                             Button {
                                 showCommonExamples.toggle()
                             } label: {
-                                Text("Common examples")
-                                    .fontWeight(.semibold)
+                                Label("Common Examples", systemImage: "lightbulb")
+                                    .font(.headline)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 10)
                             }
                             .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
                             .accessibilityHint("Opens a sheet with common gratitude ideas to help you get started.")
                         }
                         .frame(maxWidth: .infinity)
+                        .padding(20)
+                        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                .strokeBorder(Color.gray.opacity(0.15))
+                        )
+
+                        // Gentle reminder
+                        Text("There’s no right or wrong — anything you’re thankful for is valid.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
                     }
-                    .frame(maxWidth: 500)    // keeps layout tidy on iPad
+                    .frame(maxWidth: 500)
                     .padding(.horizontal)
                     .padding(.top, 32)
-                    .padding(.bottom, 80)    // room for toolbar affordances
+                    .padding(.bottom, 80)
                 }
             }
+            .navigationTitle("Home")
+            .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Thanks.self) { thanks in
-                // Ensure EditThanksView exists in your project.
-//                EditThanksView(navigationPath: $path, thanks: thanks)
+                // TODO: Enable when EditThanksView is available.
+                // EditThanksView(navigationPath: $path, thanks: thanks)
+                Text("EditThanksView goes here for: \(thanks.title)")
             }
             .sheet(isPresented: $showCommonExamples) {
                 CommonThanksView()
@@ -85,6 +117,7 @@ struct HomeView: View {
                         path.append(newThanks)
                     } label: {
                         Image(systemName: "plus")
+                            .imageScale(.large)
                     }
                     .popoverTip(addThanksTip)
                     .accessibilityLabel("Add new Thanks")
