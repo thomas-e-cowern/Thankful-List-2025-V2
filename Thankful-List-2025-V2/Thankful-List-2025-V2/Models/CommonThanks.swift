@@ -8,6 +8,17 @@
 import Foundation
 
 struct CommonThanksData: Codable {
-    let commonThanks: String
-    let thanksType: [String]
+    let relationshipsConnections, family, healthWellBeing, basicNeedsSecurity: [String]
+    let personalGrowthFulfillment, everydayComforts, deeperIntangibles, nature: [String]
+    
+    enum CodingKeys: String, CodingKey {
+        case relationshipsConnections = "Relationships & Connections"
+        case family = "Family"
+        case healthWellBeing = "Health & Well-being"
+        case basicNeedsSecurity = "Basic Needs & Security"
+        case personalGrowthFulfillment = "Personal Growth & Fulfillment"
+        case everydayComforts = "Everyday Comforts"
+        case deeperIntangibles = "Deeper Intangibles"
+        case nature = "Nature"
+    }
 }
