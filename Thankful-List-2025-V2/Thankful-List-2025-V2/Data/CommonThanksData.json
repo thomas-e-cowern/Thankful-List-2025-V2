@@ -1,0 +1,48 @@
+{
+    "Relationships & Connections": {
+        "Family": [
+            "parents",
+            "children",
+            "siblings",
+            "extended family"
+        ],
+        "Friends and companionship": "",
+        "Romantic partners and spouses": "",
+        "Mentors, teachers, or supportive figures": ""
+    },
+    "Health & Well-being": {
+        "Physical health and mobility": "",
+        "Mental health and peace of mind": "",
+        "Access to healthcare": "",
+        "Energy and vitality": ""
+    },
+    "Basic Needs & Security": {
+        "Food and clean water": "",
+        "Shelter and a safe home": "",
+        "Financial stability or income": "",
+        "Safety and security in their community": ""
+    },
+    "Personal Growth & Fulfillment": {
+        "Education and learning opportunities": "",
+        "Work, career, or meaningful pursuits": "",
+        "Achievements and progress toward goals": "",
+        "Creativity and self-expression": ""
+    },
+    "Everyday Comforts": {
+        "Nature": [
+            "sunshine",
+            "fresh air",
+            "oceans",
+            "mountains"
+        ],
+        "Pets and animals": "",
+        "Hobbies and entertainment": "",
+        "Technology that makes life easier": ""
+    },
+    "Deeper Intangibles": {
+        "Freedom and independence": "",
+        "Faith, spirituality, or a sense of purpose": "",
+        "Acts of kindness (both given and received)": "",
+        "Moments of joy, laughter, and love": ""
+    }
+}
