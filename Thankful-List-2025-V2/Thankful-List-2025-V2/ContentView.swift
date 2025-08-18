@@ -8,16 +8,32 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var sortOrder = SortDescriptor(\Thanks.title)
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            TabView {
+                Tab("Home", systemImage: "house") {
+                    HomeView()
+                }
+                Tab("Thanks List", systemImage: "list.bullet") {
+                    Text("Thanks List View")
+//                    ThanksListView(sort: sortOrder)
+                }
+                Tab("Favorites", systemImage: "heart") {
+//                    FavoritesView(sort: sortOrder)
+                    Text("Favorites View")
+                }
+                Tab("Settings", systemImage: "gear") {
+//                    SettingsView()
+                    Text("Settings View")
+                }
+            }
         }
-        .padding()
     }
 }
+
 
 #Preview {
     ContentView()
