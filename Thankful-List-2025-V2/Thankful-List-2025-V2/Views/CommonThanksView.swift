@@ -8,8 +8,28 @@
 import SwiftUI
 
 struct CommonThanksView: View {
+    
+    @StateObject private var store = GratitudeStore() // loads CommonThanksData.json
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            Group {
+                if let err = store.errorMessage {
+                    Text(err).foregroundStyle(.red).padding()
+                } else {
+                    List {
+                        ForEach(store.data.keys.sorted(), id: \.self) { category in
+                            Section(category) {
+                                ForEach(store.data[category] ?? [], id: \.self) { item in
+                                    Text(item)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Common Thanks")
+        }
     }
 }
 
