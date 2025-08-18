@@ -14,7 +14,7 @@ struct Thankful_List_2025_V2App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: ThanksModel.self)
+                .modelContainer(for: Thanks.self)
                 .task {
                     // TODO: Remove try? Tips.resetDatastore() before shipping
                     // Below resets Tips when simulator is restarted
