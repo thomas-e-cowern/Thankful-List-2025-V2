@@ -23,7 +23,7 @@ struct HomeView: View {
                     Image("Thanks")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 200)
+                        .frame(width: 100)
                     
                     Text("Welcome to the Grateful List!")
                         .font(.title)
@@ -31,10 +31,13 @@ struct HomeView: View {
                     
                     Text("The Grateful List exists to help you keep track of people, places, experiences and things that you are grateful for in your life.")
                         .padding()
+                    
+                    Text("Not sure where to start?  Check out the info below...")
+                        .padding(.horizontal)
                 }
             }
             .navigationDestination(for: Thanks.self, destination: { thanks in
-                EditThanksView(navigationPath: $path, thanks: thanks)
+//                EditThanksView(navigationPath: $path, thanks: thanks)
             })
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
