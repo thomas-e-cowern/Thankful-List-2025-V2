@@ -20,9 +20,9 @@ class Thanks: Identifiable {
     
     @Attribute(.externalStorage) var photo: Data?
     
-    init(title: String, body: String, date: Date, isFavorite: Bool, icon: String, color: String) {
+    init(title: String, reason: String, date: Date, isFavorite: Bool, icon: String, color: String) {
         self.title = title
-        self.reason = body
+        self.reason = reason
         self.date = date
         self.isFavorite = isFavorite
         self.icon = icon
@@ -38,12 +38,12 @@ extension Thanks {
     
     static var sampleThanks: [Thanks] {
         [
-            Thanks(title: "My home", body: "I am thankful for the roof over my head", date: Date(), isFavorite: false, icon: "person.fill", color: "#FFA500"),
-            Thanks(title: "My car", body: "My car takes me where I need to go", date: Date(), isFavorite: true, icon: "car.fill", color: "00FF00"),
-            Thanks(title: "My freinds", body: "They help my out", date: Date(), isFavorite: true, icon: "house.fill", color: "0000FF"),
-            Thanks(title: "Food", body: "It nourishes my body", date: Date(), isFavorite: false, icon: "figure.table.tennis.circle.fill", color: "0000FF"),
-            Thanks(title: "TV", body: "It keeps me entertained", date: Date(), isFavorite: false, icon: "figure.american.football", color: "00FF00"),
-            Thanks(title: "Radio", body: "For when the TV doesn't work", date: Date(), isFavorite: true, icon: "figure.baseball.circle.fill", color: "#FFA500")
+            Thanks(title: "My home", reason: "I am thankful for the roof over my head", date: Date(), isFavorite: false, icon: "person.fill", color: "#FFA500"),
+            Thanks(title: "My car", reason: "My car takes me where I need to go", date: Date(), isFavorite: true, icon: "car.fill", color: "00FF00"),
+            Thanks(title: "My freinds", reason: "They help my out", date: Date(), isFavorite: true, icon: "house.fill", color: "0000FF"),
+            Thanks(title: "Food", reason: "It nourishes my body", date: Date(), isFavorite: false, icon: "figure.table.tennis.circle.fill", color: "0000FF"),
+            Thanks(title: "TV", reason: "It keeps me entertained", date: Date(), isFavorite: false, icon: "figure.american.football", color: "00FF00"),
+            Thanks(title: "Radio", reason: "For when the TV doesn't work", date: Date(), isFavorite: true, icon: "figure.baseball.circle.fill", color: "#FFA500")
         ]
     }
 }
