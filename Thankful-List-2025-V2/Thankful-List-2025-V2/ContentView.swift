@@ -26,7 +26,7 @@ struct ContentView: View {
                     Text("Favorites View")
                 }
                 Tab("Settings", systemImage: "gear") {
-//                    SettingsView()
+                    SettingsView()
                     Text("Settings View")
                 }
             }
