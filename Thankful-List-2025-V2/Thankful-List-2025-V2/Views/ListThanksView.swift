@@ -28,13 +28,13 @@ struct ListThanksView: View {
     var body: some View {
         NavigationStack(path: $path) {
             List {
-                ForEach(displayedThanks) { thank in
+                ForEach(thanks) { thank in
                     NavigationLink(value: thank) {
                         ThanksRowView(thanks: thank)
                     }
                 }
             }
-            .animation(.default, value: displayedThanks)
+            .animation(.default, value: thanks)
             .navigationTitle("Thanks List")
             .navigationDestination(for: Thanks.self) { thank in
                 AddEditThanksView(navigationPath: $path, thanks: thank)
@@ -66,6 +66,7 @@ struct ListThanksView: View {
                         )
                         modelContext.insert(newThanks)
                         path.append(newThanks)
+                        print("Current thanks count: \(thanks.count)")
                     } label: {
                         Image(systemName: "plus")
                             .imageScale(.large)
@@ -76,11 +77,11 @@ struct ListThanksView: View {
                 }
             }
             .overlay {
-                if displayedThanks.isEmpty {
+                if thanks.isEmpty {
                     ContentUnavailableView(
-                        "No favorites yet",
+                        "No thanks yet",
                         systemImage: "heart",
-                        description: Text(emptyStateDescription)
+                        description: Text("Tap the + button to add a thanks")
                     )
                 }
             }
@@ -102,7 +103,7 @@ struct ListThanksView: View {
     }
 
     private var emptyStateDescription: String {
-        if !searchText.isEmpty {
+        if searchText.isEmpty {
             return "No favorites match “\(searchText)”. Try a different search or clear the field."
         }
         return "Mark some items as favorites to see them here. Tap the + button to add a new one."
