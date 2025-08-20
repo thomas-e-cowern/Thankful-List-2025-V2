@@ -103,13 +103,6 @@ struct ListThanksView: View {
             return searchedBox.sorted(using: sortOption.descriptors)
         }
     }
-
-//    private var emptyStateDescription: String {
-//        if searchText.isEmpty {
-//            return "No favorites match “\(searchText)”. Try a different search or clear the field."
-//        }
-//        return "Mark some items as favorites to see them here. Tap the + button to add a new one."
-//    }
 }
 
 // MARK: - Sorting
