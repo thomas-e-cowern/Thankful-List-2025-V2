@@ -19,7 +19,7 @@ struct ContentView: View {
                 }
                 Tab("Thanks List", systemImage: "list.bullet") {
                     Text("Thanks List View")
-//                    ThanksListView(sort: sortOrder)
+                    ListThanksView(sort: sortOrder)
                 }
                 Tab("Favorites", systemImage: "heart") {
 //                    FavoritesView(sort: sortOrder)
