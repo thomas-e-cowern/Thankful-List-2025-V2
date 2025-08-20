@@ -37,8 +37,7 @@ struct ListThanksView: View {
             .animation(.default, value: displayedThanks)
             .navigationTitle("Thanks List")
             .navigationDestination(for: Thanks.self) { thank in
-                // TODO: Replace with your edit view when available
-                // EditThanksView(navigationPath: $path, thanks: thank)
+                AddEditThanksView(navigationPath: $path, thanks: thank)
                 Text("Edit view for: \(thank.title)")
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "Search favorites")
@@ -59,7 +58,7 @@ struct ListThanksView: View {
                     Button {
                         let newThanks = Thanks(
                             title: "",
-                            body: "",
+                            reason: "",
                             date: .now,
                             isFavorite: false,
                             icon: IconImages.star.rawValue,
