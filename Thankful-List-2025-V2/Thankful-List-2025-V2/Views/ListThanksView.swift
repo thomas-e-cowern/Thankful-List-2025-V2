@@ -28,13 +28,13 @@ struct ListThanksView: View {
     var body: some View {
         NavigationStack(path: $path) {
             List {
-                ForEach(thanks) { thank in
+                ForEach(displayedThanks) { thank in
                     NavigationLink(value: thank) {
                         ThanksRowView(thanks: thank)
                     }
                 }
             }
-            .animation(.default, value: thanks)
+            .animation(.default, value: displayedThanks)
             .navigationTitle("Thanks List")
             .navigationDestination(for: Thanks.self) { thank in
                 AddEditThanksView(navigationPath: $path, thanks: thank)
@@ -77,7 +77,7 @@ struct ListThanksView: View {
                 }
             }
             .overlay {
-                if thanks.isEmpty {
+                if displayedThanks.isEmpty {
                     ContentUnavailableView(
                         "No thanks yet",
                         systemImage: "heart",
@@ -91,23 +91,25 @@ struct ListThanksView: View {
     // MARK: - Derived Data
 
     private var displayedThanks: [Thanks] {
-        let favorites = thanks.filter { $0.isFavorite }
-        let searched = searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        ? favorites
-        : favorites.filter { thank in
-            let q = searchText.lowercased()
-            return thank.title.lowercased().contains(q) ||
-                   thank.reason.lowercased().contains(q)
+        
+        if searchText.isEmpty {
+            return thanks.sorted(using: sortOption.descriptors)
+        } else {
+            let searchedBox = thanks.filter {
+                $0.title.lowercased().contains(searchText.lowercased()) ||
+                $0.reason.lowercased().contains(searchText.lowercased())
+            }
+
+            return searchedBox.sorted(using: sortOption.descriptors)
         }
-        return searched.sorted(using: sortOption.descriptors)
     }
 
-    private var emptyStateDescription: String {
-        if searchText.isEmpty {
-            return "No favorites match “\(searchText)”. Try a different search or clear the field."
-        }
-        return "Mark some items as favorites to see them here. Tap the + button to add a new one."
-    }
+//    private var emptyStateDescription: String {
+//        if searchText.isEmpty {
+//            return "No favorites match “\(searchText)”. Try a different search or clear the field."
+//        }
+//        return "Mark some items as favorites to see them here. Tap the + button to add a new one."
+//    }
 }
 
 // MARK: - Sorting
