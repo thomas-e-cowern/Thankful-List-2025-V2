@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct IconPickerItemView: View {
+    
+    let icon: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            Image(systemName: icon)
+                .font(.title) // Example of larger font
+        }
     }
 }
 
 #Preview {
-    IconPickerItemView()
+    IconPickerItemView(icon: IconImages.swirl.rawValue)
 }
