@@ -107,7 +107,7 @@ struct HomeView: View {
                     Button {
                         let newThanks = Thanks(
                             title: "",
-                            body: "",
+                            reason: "",
                             date: .now,
                             isFavorite: false,
                             icon: IconImages.star.rawValue,
