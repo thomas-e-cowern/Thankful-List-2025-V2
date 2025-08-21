@@ -55,28 +55,6 @@ struct ListThanksView: View {
                     }
                     .popoverTip(addSortTip)
                 }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        let newThanks = Thanks(
-                            title: "",
-                            reason: "",
-                            date: .now,
-                            isFavorite: false,
-                            icon: IconImages.star.rawValue,
-                            color: "#007AFF"
-                        )
-                        modelContext.insert(newThanks)
-                        path.append(newThanks)
-                        print("Current thanks count: \(thanks.count)")
-                    } label: {
-                        Image(systemName: "plus")
-                            .imageScale(.large)
-                    }
-                    .popoverTip(addThanksTip)
-                    .accessibilityLabel("Add new Thanks")
-                    .accessibilityHint("Opens the form to add a new gratitude entry.")
-                }
             }
             .overlay {
                 if displayedThanks.isEmpty {
@@ -87,6 +65,7 @@ struct ListThanksView: View {
                     )
                 }
             }
+            .addThanksToolbar(path: $path)
         }
     }
 

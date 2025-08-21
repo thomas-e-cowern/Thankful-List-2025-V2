@@ -19,7 +19,7 @@ struct FavoritesView: View {
     @State private var searchText = ""
     @State private var sortOption: SortOption = .titleAsc
     
-    private let addThanksTip = AddThanksTip()
+    private let addFavoritesTip = AddFavoritesTip()
     
     init(sort: SortDescriptor<Thanks>) {
         _thanks = Query(sort: [sort])
@@ -33,6 +33,7 @@ struct FavoritesView: View {
                         ThanksRowView(thanks: thank)
                     }
                 }
+//                .popoverTip(addFavoritesTip)
                 .onDelete(perform: deleteThanks)
             }
             .animation(.default, value: displayedThanks)
@@ -54,28 +55,6 @@ struct FavoritesView: View {
                         Label("Sort", systemImage: "arrow.up.arrow.down")
                     }
                 }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        let newThanks = Thanks(
-                            title: "",
-                            reason: "",
-                            date: .now,
-                            isFavorite: false,
-                            icon: IconImages.star.rawValue,
-                            color: "#007AFF"
-                        )
-                        modelContext.insert(newThanks)
-                        path.append(newThanks)
-                        print("Current thanks count: \(thanks.count)")
-                    } label: {
-                        Image(systemName: "plus")
-                            .imageScale(.large)
-                    }
-                    .popoverTip(addThanksTip)
-                    .accessibilityLabel("Add new Thanks")
-                    .accessibilityHint("Opens the form to add a new gratitude entry.")
-                }
             }
             .overlay {
                 if displayedThanks.isEmpty {
@@ -86,6 +65,7 @@ struct FavoritesView: View {
                     )
                 }
             }
+            .addThanksToolbar(path: $path)
         }
     }
     
