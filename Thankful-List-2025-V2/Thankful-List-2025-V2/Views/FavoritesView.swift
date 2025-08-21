@@ -12,19 +12,19 @@ import TipKit
 struct FavoritesView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var path = NavigationPath()
-
+    
     // Initial fetch is sorted; we’ll still re-sort in-memory so user sort changes are instant.
     @Query private var thanks: [Thanks]
-
+    
     @State private var searchText = ""
     @State private var sortOption: SortOption = .titleAsc
-
+    
     private let addThanksTip = AddThanksTip()
-
+    
     init(sort: SortDescriptor<Thanks>) {
         _thanks = Query(sort: [sort])
     }
-
+    
     var body: some View {
         NavigationStack(path: $path) {
             List {
@@ -35,7 +35,7 @@ struct FavoritesView: View {
                 }
             }
             .animation(.default, value: displayedThanks)
-            .navigationTitle("Thanks List")
+            .navigationTitle("Favorites List")
             .navigationDestination(for: Thanks.self) { thank in
                 AddEditThanksView(navigationPath: $path, thanks: thank)
                 Text("Edit view for: \(thank.title)")
@@ -53,7 +53,7 @@ struct FavoritesView: View {
                         Label("Sort", systemImage: "arrow.up.arrow.down")
                     }
                 }
-
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         let newThanks = Thanks(
@@ -79,29 +79,28 @@ struct FavoritesView: View {
             .overlay {
                 if displayedThanks.isEmpty {
                     ContentUnavailableView(
-                        "No thanks yet",
+                        "No favorites yet",
                         systemImage: "heart",
-                        description: Text("Tap the + button to add a thanks")
+                        description: Text("Tap the + button to add a thanks and make it a favorite")
                     )
                 }
             }
         }
     }
-
+    
     // MARK: - Derived Data
-
+    
     private var displayedThanks: [Thanks] {
         
-        if searchText.isEmpty {
-            return thanks.sorted(using: sortOption.descriptors)
-        } else {
-            let searchedBox = thanks.filter {
-                $0.title.lowercased().contains(searchText.lowercased()) ||
-                $0.reason.lowercased().contains(searchText.lowercased())
-            }
-
-            return searchedBox.sorted(using: sortOption.descriptors)
+        let favorites = thanks.filter { $0.isFavorite }
+        let searched = searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        ? favorites
+        : favorites.filter { thank in
+            let q = searchText.lowercased()
+            return thank.title.lowercased().contains(q) ||
+            thank.reason.lowercased().contains(q)
         }
+        return searched.sorted(using: sortOption.descriptors)
     }
 }
 
@@ -109,7 +108,7 @@ struct FavoritesView: View {
 
 private enum SortOption: CaseIterable {
     case titleAsc, titleDesc, dateAsc, dateDesc
-
+    
     var label: String {
         switch self {
         case .titleAsc:  return "Name A → Z"
@@ -118,7 +117,7 @@ private enum SortOption: CaseIterable {
         case .dateDesc:  return "Date Newest → Oldest"
         }
     }
-
+    
     var descriptors: [SortDescriptor<Thanks>] {
         switch self {
         case .titleAsc:
