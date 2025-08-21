@@ -140,10 +140,10 @@ struct SettingsView: View {
                 Button("Delete All Data", role: .destructive) { deleteAllData() }
             }
             .sheet(isPresented: $showNotificationSchedular) {
-//                NotificationSchedulerView()
+                NotificationSchedulerView()
             }
             .sheet(isPresented: $showScheduledNotifications) {
-//                NotificationListViewNew()
+                NotificationListView()
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
