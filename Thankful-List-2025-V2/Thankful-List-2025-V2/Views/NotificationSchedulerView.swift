@@ -44,29 +44,30 @@ struct NotificationSchedulerView: View {
                         .padding(.vertical, 4)
                     }
 
-                    // Days (individually selectable)
+                    // Days (individually selectable with Toggle + custom style)
                     Section {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Select Days")
                                 .font(.headline)
 
-                            LazyVGrid(columns: [
-                                GridItem(.flexible(), spacing: 8),
-                                GridItem(.flexible(), spacing: 8),
-                                GridItem(.flexible(), spacing: 8)
-                            ], spacing: 8) {
+                            LazyVGrid(
+                                columns: [
+                                    GridItem(.flexible(), spacing: 8),
+                                    GridItem(.flexible(), spacing: 8),
+                                    GridItem(.flexible(), spacing: 8)
+                                ],
+                                spacing: 8
+                            ) {
                                 ForEach(daysOfWeek, id: \.self) { day in
-                                    // Each chip gets its own binding to membership in the set
-                                    ChipToggle(
-                                        title: day,
-                                        isOn: Binding(
-                                            get: { selectedDays.contains(day) },
-                                            set: { newValue in
-                                                if newValue { selectedDays.insert(day) }
-                                                else { selectedDays.remove(day) }
-                                            }
-                                        )
-                                    )
+                                    Toggle(day, isOn: Binding(
+                                        get: { selectedDays.contains(day) },
+                                        set: { isOn in
+                                            if isOn { selectedDays.insert(day) }
+                                            else { selectedDays.remove(day) }
+                                        }
+                                    ))
+                                    .toggleStyle(ChipToggleStyle())     // ← key change
+                                    .accessibilityLabel(day + (selectedDays.contains(day) ? ", selected" : ""))
                                 }
                             }
 
@@ -176,16 +177,12 @@ struct NotificationSchedulerView: View {
     }
 }
 
-// MARK: - Chip control with independent binding
-private struct ChipToggle: View {
-    let title: String
-    @Binding var isOn: Bool
-
-    var body: some View {
+private struct ChipToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
         Button {
-            isOn.toggle()
+            configuration.isOn.toggle()
         } label: {
-            Text(title)
+            configuration.label
                 .font(.subheadline.weight(.semibold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
@@ -194,16 +191,16 @@ private struct ChipToggle: View {
                 .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(isOn ? Color.accentColor.opacity(0.15) : Color(.secondarySystemBackground))
+                        .fill(configuration.isOn ? Color.accentColor.opacity(0.15) : Color(.secondarySystemBackground))
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .stroke(isOn ? Color.accentColor : Color.gray.opacity(0.25), lineWidth: 1)
+                        .stroke(configuration.isOn ? Color.accentColor : Color.gray.opacity(0.25), lineWidth: 1)
                 )
+                .foregroundStyle(configuration.isOn ? Color.accentColor : .primary)
         }
-        .foregroundStyle(isOn ? Color.accentColor : .primary)
+        .buttonStyle(.plain) // important to avoid extra row selection behavior inside Form
         .contentShape(Rectangle())
-        .accessibilityLabel(title + (isOn ? ", selected" : ""))
     }
 }
 
