@@ -22,7 +22,7 @@ struct ContentView: View {
                     ListThanksView(sort: sortOrder)
                 }
                 Tab("Favorites", systemImage: "heart") {
-//                    FavoritesView(sort: sortOrder)
+                    FavoritesView(sort: sortOrder)
                     Text("Favorites View")
                 }
                 Tab("Settings", systemImage: "gear") {
