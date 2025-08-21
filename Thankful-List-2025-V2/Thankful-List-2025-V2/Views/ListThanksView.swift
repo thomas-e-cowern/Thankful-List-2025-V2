@@ -19,7 +19,6 @@ struct ListThanksView: View {
     @State private var searchText = ""
     @State private var sortOption: SortOption = .titleAsc
 
-    private let addThanksTip = AddThanksTip()
     let addSortTip = AddSortTip()
 
     init(sort: SortDescriptor<Thanks>) {
@@ -53,9 +52,11 @@ struct ListThanksView: View {
                     } label: {
                         Label("Sort", systemImage: "arrow.up.arrow.down")
                     }
-                    .popoverTip(addSortTip)
+                    
                 }
+                
             }
+            .popoverTip(addSortTip)
             .overlay {
                 if displayedThanks.isEmpty {
                     ContentUnavailableView(

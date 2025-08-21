@@ -33,7 +33,6 @@ struct FavoritesView: View {
                         ThanksRowView(thanks: thank)
                     }
                 }
-//                .popoverTip(addFavoritesTip)
                 .onDelete(perform: deleteThanks)
             }
             .animation(.default, value: displayedThanks)
@@ -66,6 +65,7 @@ struct FavoritesView: View {
                 }
             }
             .addThanksToolbar(path: $path)
+            .popoverTip(addFavoritesTip)
         }
     }
     
