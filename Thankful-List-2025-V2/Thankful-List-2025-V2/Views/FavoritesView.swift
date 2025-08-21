@@ -33,6 +33,7 @@ struct FavoritesView: View {
                         ThanksRowView(thanks: thank)
                     }
                 }
+                .onDelete(perform: deleteThanks)
             }
             .animation(.default, value: displayedThanks)
             .navigationTitle("Favorites List")
@@ -89,7 +90,6 @@ struct FavoritesView: View {
     }
     
     // MARK: - Derived Data
-    
     private var displayedThanks: [Thanks] {
         
         let favorites = thanks.filter { $0.isFavorite }
@@ -102,6 +102,20 @@ struct FavoritesView: View {
         }
         return searched.sorted(using: sortOption.descriptors)
     }
+    
+    // MARK: - Functions and Methods
+    func deleteThanks(at offsets: IndexSet) {
+            for offset in offsets {
+                let thanks = thanks[offset]
+                modelContext.delete(thanks)
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Unable to delete thanks: \(error.localizedDescription)")
+                }
+            }
+        }
+    
 }
 
 // MARK: - Sorting
