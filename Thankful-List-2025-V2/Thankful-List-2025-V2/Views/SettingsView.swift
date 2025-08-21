@@ -18,9 +18,10 @@ struct SettingsView: View {
 
     @State private var showNotificationSchedular: Bool = false
     @State private var showScheduledNotifications: Bool = false
+    @State private var isTipVisible = true   // track visibility
     @State private var showAlert = false
 
-//    let settingsTip = SettingsTip()
+    let settingsTip = SettingsTip()
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -35,14 +36,35 @@ struct SettingsView: View {
                 ScrollView {
                     VStack(spacing: 20) {
 
-                        // TipKit card
-                        VStack(alignment: .leading, spacing: 12) {
-//                            TipView(settingsTip)
+                        // TipKit card (animated)
+                        if isTipVisible {
+                            VStack(alignment: .leading, spacing: 12) {
+                                TipView(settingsTip)
+                                    .onAppear {
+                                        withAnimation(.spring(response: 0.32, dampingFraction: 0.88)) {
+                                            isTipVisible = true
+                                        }
+                                    }
+                                    .onDisappear {
+                                        // When the tip is dismissed, animate the container away too
+                                        withAnimation(.spring(response: 0.35, dampingFraction: 0.9)) {
+                                            isTipVisible = false
+                                        }
+                                    }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(16)
+                            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Color.gray.opacity(0.15)))
+                            // Smooth in/out
+                            .transition(
+                                .asymmetric(
+                                    insertion: .opacity.combined(with: .scale(scale: 0.98, anchor: .top)),
+                                    removal: .opacity.combined(with: .scale(scale: 0.92, anchor: .top))
+                                )
+                            )
+                            .animation(.spring(response: 0.35, dampingFraction: 0.9), value: isTipVisible)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(16)
-                        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(Color.gray.opacity(0.15)))
 
                         // Notifications card
                         VStack(alignment: .leading, spacing: 16) {
