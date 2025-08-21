@@ -18,16 +18,13 @@ struct ContentView: View {
                     HomeView()
                 }
                 Tab("Thanks List", systemImage: "list.bullet") {
-                    Text("Thanks List View")
                     ListThanksView(sort: sortOrder)
                 }
                 Tab("Favorites", systemImage: "heart") {
                     FavoritesView(sort: sortOrder)
-                    Text("Favorites View")
                 }
                 Tab("Settings", systemImage: "gear") {
                     SettingsView()
-                    Text("Settings View")
                 }
             }
         }
