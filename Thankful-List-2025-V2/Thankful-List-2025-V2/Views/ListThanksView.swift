@@ -20,6 +20,7 @@ struct ListThanksView: View {
     @State private var sortOption: SortOption = .titleAsc
 
     private let addThanksTip = AddThanksTip()
+    let addSortTip = AddSortTip()
 
     init(sort: SortDescriptor<Thanks>) {
         _thanks = Query(sort: [sort])
@@ -52,6 +53,7 @@ struct ListThanksView: View {
                     } label: {
                         Label("Sort", systemImage: "arrow.up.arrow.down")
                     }
+                    .popoverTip(addSortTip)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
