@@ -12,19 +12,19 @@ import TipKit
 struct ListThanksView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var path = NavigationPath()
-
+    
     // Initial fetch is sorted; we’ll still re-sort in-memory so user sort changes are instant.
     @Query private var thanks: [Thanks]
-
+    
     @State private var searchText = ""
     @State private var sortOption: SortOption = .titleAsc
-
+    
     let addSortTip = AddSortTip()
-
+    
     init(sort: SortDescriptor<Thanks>) {
         _thanks = Query(sort: [sort])
     }
-
+    
     var body: some View {
         NavigationStack(path: $path) {
             List {
@@ -69,9 +69,9 @@ struct ListThanksView: View {
             .addThanksToolbar(path: $path)
         }
     }
-
+    
     // MARK: - Derived Data
-
+    
     private var displayedThanks: [Thanks] {
         
         if searchText.isEmpty {
@@ -81,7 +81,7 @@ struct ListThanksView: View {
                 $0.title.lowercased().contains(searchText.lowercased()) ||
                 $0.reason.lowercased().contains(searchText.lowercased())
             }
-
+            
             return searchedBox.sorted(using: sortOption.descriptors)
         }
     }
@@ -91,7 +91,7 @@ struct ListThanksView: View {
 
 private enum SortOption: CaseIterable {
     case titleAsc, titleDesc, dateAsc, dateDesc
-
+    
     var label: String {
         switch self {
         case .titleAsc:  return "Name A → Z"
@@ -100,7 +100,7 @@ private enum SortOption: CaseIterable {
         case .dateDesc:  return "Date Newest → Oldest"
         }
     }
-
+    
     var descriptors: [SortDescriptor<Thanks>] {
         switch self {
         case .titleAsc:
