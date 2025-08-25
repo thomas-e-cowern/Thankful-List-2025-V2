@@ -154,9 +154,6 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: Thanks.self) { thanks in
-//                EditThanksView(navigationPath: $path, thanks: thanks)
-            }
             .alert("Delete all data? This is irreversible.", isPresented: $showAlert) {
                 Button("Cancel", role: .cancel) { dismiss() }
                 Button("Delete All Data", role: .destructive) { deleteAllData() }
