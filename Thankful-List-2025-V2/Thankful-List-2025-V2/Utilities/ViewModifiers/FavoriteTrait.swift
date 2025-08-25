@@ -5,4 +5,15 @@
 //  Created by Thomas Cowern on 8/25/25.
 //
 
-import Foundation
+import SwiftUI
+
+struct FavoriteTrait: ViewModifier {
+    let isFavorite: Bool
+    func body(content: Content) -> some View {
+        if isFavorite {
+            content.accessibilityAddTraits(.isSelected)
+        } else {
+            content
+        }
+    }
+}

@@ -17,7 +17,7 @@ struct FavoritesView: View {
     @Query private var thanks: [Thanks]
     
     @State private var searchText = ""
-    @State private var sortOption: SortOption = .titleAsc
+    @State private var sortOption: ThanksSortOption = .titleAsc
     
     private let addFavoritesTip = AddFavoritesTip()
     
@@ -34,6 +34,7 @@ struct FavoritesView: View {
                     }
                 }
                 .onDelete(perform: deleteThanks)
+                
             }
             .animation(.default, value: displayedThanks)
             .navigationTitle("Favorites List")
@@ -42,20 +43,12 @@ struct FavoritesView: View {
                 Text("Edit view for: \(thank.title)")
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "Search favorites")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Menu {
-                        Picker("Sort", selection: $sortOption) {
-                            ForEach(SortOption.allCases, id: \.self) { option in
-                                Text(option.label).tag(option)
-                            }
-                        }
-                    } label: {
-                        Label("Sort", systemImage: "arrow.up.arrow.down")
-                    }
-                }
-            }
-            .popoverTip(addFavoritesTip)
+            .withSortToolbar(
+                selection: $sortOption,
+                labelForOption: { $0.label },
+                tip: nil     // or nil if you don't want a TipKit popover
+            )
+            
             .overlay {
                 if displayedThanks.isEmpty {
                     ContentUnavailableView(
@@ -66,7 +59,7 @@ struct FavoritesView: View {
                 }
             }
             .addThanksToolbar(path: $path)
-            
+            .popoverTip(addFavoritesTip)
         }
     }
     
@@ -97,34 +90,6 @@ struct FavoritesView: View {
             }
         }
     
-}
-
-// MARK: - Sorting
-
-private enum SortOption: CaseIterable {
-    case titleAsc, titleDesc, dateAsc, dateDesc
-    
-    var label: String {
-        switch self {
-        case .titleAsc:  return "Name A → Z"
-        case .titleDesc: return "Name Z → A"
-        case .dateAsc:   return "Date Oldest → Newest"
-        case .dateDesc:  return "Date Newest → Oldest"
-        }
-    }
-    
-    var descriptors: [SortDescriptor<Thanks>] {
-        switch self {
-        case .titleAsc:
-            [SortDescriptor(\Thanks.title, order: .forward)]
-        case .titleDesc:
-            [SortDescriptor(\Thanks.title, order: .reverse)]
-        case .dateAsc:
-            [SortDescriptor(\Thanks.date)]
-        case .dateDesc:
-            [SortDescriptor(\Thanks.date, order: .reverse)]
-        }
-    }
 }
 
 // MARK: - Preview

@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+final class DateCache {
+    static let shared = DateCache()
+    let dayTime: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "EEEE 'at' h:mm a"   // Monday at 9:30 AM
+        return df
+    }()
+}
