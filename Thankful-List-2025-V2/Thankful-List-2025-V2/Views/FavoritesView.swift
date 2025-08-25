@@ -55,6 +55,7 @@ struct FavoritesView: View {
                     }
                 }
             }
+            .popoverTip(addFavoritesTip)
             .overlay {
                 if displayedThanks.isEmpty {
                     ContentUnavailableView(
@@ -65,7 +66,7 @@ struct FavoritesView: View {
                 }
             }
             .addThanksToolbar(path: $path)
-            .popoverTip(addFavoritesTip)
+            
         }
     }
     
