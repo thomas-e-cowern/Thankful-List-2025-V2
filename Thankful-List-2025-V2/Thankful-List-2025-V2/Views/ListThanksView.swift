@@ -30,13 +30,10 @@ struct ListThanksView: View {
             List {
                 ForEach(displayedThanks) { thank in
                     NavigationLink(value: thank) {
-                        
-                        ThanksRowView(thanks: thank)
-                            .thanksAccessibility(thank)
-                        
+                        AccessibleThanksRow(thank: thank)
                     }
                 }
-                
+                .onDelete(perform: deleteThanks)
             }
             .animation(.default, value: displayedThanks)
             .navigationTitle("Thanks List")
@@ -78,6 +75,19 @@ struct ListThanksView: View {
             return searchedBox.sorted(using: sortOption.descriptors)
         }
     }
+    
+    // MARK: - Functions and Methods
+    func deleteThanks(at offsets: IndexSet) {
+            for offset in offsets {
+                let thanks = thanks[offset]
+                modelContext.delete(thanks)
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Unable to delete thanks: \(error.localizedDescription)")
+                }
+            }
+        }
 }
 
 // MARK: - Preview

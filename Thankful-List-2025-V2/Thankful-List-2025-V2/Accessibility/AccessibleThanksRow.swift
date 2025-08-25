@@ -7,30 +7,34 @@
 
 import SwiftUI
 
-struct AccessibleThanksRow<RowContent: View>: View {
+struct AccessibleThanksRow: View {
     let thank: Thanks
-    @ViewBuilder var content: RowContent
-
-    // Precompute strings so the view tree is simple
-    private var labelText: String {
+    
+    // Precompute simple values in init to keep the body trivial
+    private let idString: String
+    private let isFavorite: Bool
+    private let labelText: String
+    
+    init(thank: Thanks) {
+        self.thank = thank
+        self.idString = thank.id.uuidString
+        self.isFavorite = thank.isFavorite
+        
         var parts: [String] = [thank.title.isEmpty ? "Untitled" : thank.title]
         if thank.isFavorite { parts.append("favorite") }
         parts.append("added \(DateCache.shared.dayTime.string(from: thank.date))")
-        return parts.joined(separator: ", ")
+        self.labelText = parts.joined(separator: ", ")
     }
-
-    private var hintText: String { "Opens details to view or edit." }
-
+    
     var body: some View {
-        NavigationLink(value: thank) {
-            // Wrap content so VO treats it as a single element
-            content
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel(Text(labelText))
-                .accessibilityHint(Text(hintText))
-                // Apply trait conditionally without ternaries in the chain
-                .modifier(FavoriteTrait(isFavorite: thank.isFavorite))
-                .accessibilityIdentifier("thanksRow_\(thank.id.uuidString)")
-        }
+        
+        ThanksRowView(thanks: thank)
+        // Keep each modifier very plain; avoid complex conditionals/ternaries here
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(Text(verbatim: labelText))
+            .accessibilityHint(Text("Opens details to view or edit."))
+            .accessibilityIdentifier("thanksRow_\(idString)")
+            .modifier(FavoriteTrait(isFavorite: isFavorite))
+        
     }
 }
