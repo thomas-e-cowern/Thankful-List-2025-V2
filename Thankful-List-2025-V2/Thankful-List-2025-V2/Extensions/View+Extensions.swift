@@ -5,4 +5,10 @@
 //  Created by Thomas Cowern on 8/25/25.
 //
 
-import Foundation
+import SwiftUI
+
+private extension View {
+    func thanksAccessibility(_ thank: Thanks) -> some View {
+        modifier(ThanksAccessibilityModifier(thank: thank))
+    }
+}
