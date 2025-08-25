@@ -30,17 +30,15 @@ struct FavoritesView: View {
             List {
                 ForEach(displayedThanks) { thank in
                     NavigationLink(value: thank) {
-                        ThanksRowView(thanks: thank)
+                        AccessibleThanksRow(thank: thank)
                     }
                 }
                 .onDelete(perform: deleteThanks)
-                
             }
             .animation(.default, value: displayedThanks)
             .navigationTitle("Favorites List")
             .navigationDestination(for: Thanks.self) { thank in
                 AddEditThanksView(navigationPath: $path, thanks: thank)
-                Text("Edit view for: \(thank.title)")
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "Search favorites")
             .withSortToolbar(
@@ -48,7 +46,7 @@ struct FavoritesView: View {
                 labelForOption: { $0.label },
                 tip: nil     // or nil if you don't want a TipKit popover
             )
-            
+            .popoverTip(addFavoritesTip)
             .overlay {
                 if displayedThanks.isEmpty {
                     ContentUnavailableView(
@@ -59,7 +57,7 @@ struct FavoritesView: View {
                 }
             }
             .addThanksToolbar(path: $path)
-            .popoverTip(addFavoritesTip)
+            
         }
     }
     
