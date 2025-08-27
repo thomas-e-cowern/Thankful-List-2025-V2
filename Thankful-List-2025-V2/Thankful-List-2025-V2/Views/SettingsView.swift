@@ -78,6 +78,9 @@ struct SettingsView: View {
                     .accessibilityLabel("Scheduled Notifications")
                     .accessibilityHint("Review and edit existing reminders.")
             }
+            .navigationDestination(for: Thanks.self) { thank in
+                AddEditThanksView(navigationPath: $path, thanks: thank)
+            }
             .addThanksToolbar(path: $path)
         }
     }
