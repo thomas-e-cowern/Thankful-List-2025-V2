@@ -43,47 +43,6 @@ struct SettingsView: View {
 
                         // Notifications card
                         NotificationsSectionView(showNotificationSchedular: $showNotificationSchedular, showScheduledNotifications: $showScheduledNotifications)
-//                        VStack(alignment: .leading, spacing: 16) {
-//                            HStack(spacing: 10) {
-//                                Image(systemName: "bell.badge")
-//                                    .imageScale(.large)
-//                                    .accessibilityHidden(true) // icon is decorative, text conveys meaning
-//                                Text("Notifications")
-//                                    .font(.headline)
-//                                    .accessibilityAddTraits(.isHeader)
-//                            }
-//
-//                            VStack(spacing: 10) {
-//                                Button {
-//                                    showNotificationSchedular.toggle()
-//                                } label: {
-//                                    Label("Schedule Notifications", systemImage: "calendar.badge.plus")
-//                                        .frame(maxWidth: .infinity, alignment: .leading)
-//                                }
-//                                .buttonStyle(.borderedProminent)
-//                                .accessibilityLabel("Schedule notifications")
-//                                .accessibilityHint("Opens the scheduler to pick times and days.")
-//
-//                                Button {
-//                                    showScheduledNotifications.toggle()
-//                                } label: {
-//                                    Label("See Scheduled Notifications", systemImage: "list.bullet.rectangle")
-//                                        .frame(maxWidth: .infinity, alignment: .leading)
-//                                }
-//                                .buttonStyle(.bordered)
-//                                .accessibilityLabel("See scheduled notifications")
-//                                .accessibilityHint("Shows a list of notifications that are already scheduled.")
-//                            }
-//                        }
-//                        .padding(16)
-//                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-//                        .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(Color.gray.opacity(0.15)))
-//                        // Treat the card as a region and read its children together
-//                        .accessibilityElement(children: .contain)
-//                        .accessibilitySortPriority(2)
-//                        .accessibilityLabel("Notifications section")
-//                        .accessibilityHint("Manage scheduling and review existing notifications.")
-//                        .accessibilityAddTraits(.isSummaryElement)
 
                         // Data / destructive actions card
                         DataSectionView(showAlert: $showAlert)
@@ -100,7 +59,6 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
-//            .accessibilityNavigationStyle(.automatic) // lets iOS choose the best behavior for assistive tech
             .alert("Delete all data? This is irreversible.", isPresented: $showAlert) {
                 Button("Cancel", role: .cancel) { dismiss() }
                     .accessibilityLabel("Cancel")
@@ -120,28 +78,6 @@ struct SettingsView: View {
                     .accessibilityLabel("Scheduled Notifications")
                     .accessibilityHint("Review and edit existing reminders.")
             }
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button {
-//                        let newThanks = Thanks(
-//                            title: "",
-//                            reason: "",
-//                            date: .now,
-//                            isFavorite: false,
-//                            icon: IconImages.star.rawValue,
-//                            color: "#007AFF"
-//                        )
-//                        modelContext.insert(newThanks)
-//                        path.append(newThanks)
-//                    } label: {
-//                        Image(systemName: "plus")
-//                            .imageScale(.large)
-//                            .accessibilityHidden(true) // hide the raw glyph; provide a better label on the button itself
-//                    }
-//                    .accessibilityLabel("Add new gratitude entry")
-//                    .accessibilityHint("Creates a new item and opens it for editing.")
-//                }
-//            }
             .addThanksToolbar(path: $path)
         }
     }
@@ -156,7 +92,6 @@ struct SettingsView: View {
     }
 }
 
-
 #Preview {
     SettingsView()
         .task {
@@ -167,4 +102,3 @@ struct SettingsView: View {
             ])
         }
 }
-
