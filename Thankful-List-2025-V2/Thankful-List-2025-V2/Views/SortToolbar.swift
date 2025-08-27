@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-
-import SwiftUI
 import TipKit
 
 /// Generic, reusable sort toolbar. Attach only on screens that need sorting.
@@ -35,20 +33,51 @@ public struct SortToolbar<Option: CaseIterable & Hashable>: ToolbarContent {
     public var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Menu {
+                // Inside the menu: expose a native Picker for semantic selection
                 Picker(title, selection: $selection) {
                     ForEach(Array(Option.allCases), id: \.self) { option in
-                        Text(labelForOption(option)).tag(option)
+                        Text(labelForOption(option))
+                            .tag(option)
+                            .accessibilityLabel(labelForOption(option))
                     }
                 }
-                // Let VoiceOver announce current choice
+                // Tell VO what the current selection is
+                .accessibilityLabel(title)
                 .accessibilityValue(labelForOption(selection))
+                .accessibilityHint("Choose how items are ordered.")
+                .accessibilityIdentifier("SortToolbar.Picker")
             } label: {
                 Label(title, systemImage: systemImage)
-                    .accessibilityLabel("\(title) list")
-                    .accessibilityHint("Choose how items are ordered.")
+                    // The label (rendered as a button) needs a concise name + live value
+                    .accessibilityLabel(title)
                     .accessibilityValue(labelForOption(selection))
+                    .accessibilityHint("Double-tap to choose a sort order. Swipe up or down to change quickly.")
+                    .accessibilityIdentifier("SortToolbar.MenuButton")
+                    // Let rotor users adjust without opening the menu
+                    .accessibilityAdjustableAction { direction in
+                        let all = Array(Option.allCases)
+                        guard let idx = all.firstIndex(of: selection) else { return }
+                        switch direction {
+                        case .increment:
+                            let next = all.index(after: idx)
+                            selection = next < all.endIndex ? all[next] : all[all.startIndex]
+                        case .decrement:
+                            selection = idx > all.startIndex ? all[all.index(before: idx)] : all[all.index(before: all.endIndex)]
+                        @unknown default:
+                            break
+                        }
+                    }
+                    // Offer a representation that feels like a picker to assistive tech
+                    .accessibilityRepresentation {
+                        Picker(title, selection: $selection) {
+                            ForEach(Array(Option.allCases), id: \.self) { option in
+                                Text(labelForOption(option)).tag(option)
+                            }
+                        }
+                        .accessibilityIdentifier("SortToolbar.RepresentedPicker")
+                    }
             }
-            // Optional TipKit popover (safe anchor on label view)
+            // Optional TipKit anchor stays on the label button
             .popoverTip(tip)
         }
     }
