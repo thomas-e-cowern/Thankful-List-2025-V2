@@ -93,37 +93,14 @@ struct HomeView: View {
             }
             .navigationTitle("Home")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: Thanks.self) { thanks in
-                // TODO: Enable when EditThanksView is available.
-                // EditThanksView(navigationPath: $path, thanks: thanks)
-                Text("EditThanksView goes here for: \(thanks.title)")
+            .navigationDestination(for: Thanks.self) { thank in
+                AddEditThanksView(navigationPath: $path, thanks: thank)
             }
             .sheet(isPresented: $showCommonExamples) {
                 CommonThanksView()
                     .presentationDetents([.large])
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        let newThanks = Thanks(
-                            title: "",
-                            reason: "",
-                            date: .now,
-                            isFavorite: false,
-                            icon: IconImages.star.rawValue,
-                            color: "#007AFF"
-                        )
-                        modelContext.insert(newThanks)
-                        path.append(newThanks)
-                    } label: {
-                        Image(systemName: "plus")
-                            .imageScale(.large)
-                    }
-                    .popoverTip(addThanksTip)
-                    .accessibilityLabel("Add new Thanks")
-                    .accessibilityHint("Opens the form to add a new gratitude entry.")
-                }
-            }
+            .addThanksToolbar(path: $path)
         }
     }
 }
