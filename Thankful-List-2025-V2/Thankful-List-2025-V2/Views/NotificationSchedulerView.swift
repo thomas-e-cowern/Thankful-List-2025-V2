@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 import UserNotifications
 
 struct NotificationSchedulerView: View {
@@ -20,67 +21,22 @@ struct NotificationSchedulerView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                // Decorative background
                 LinearGradient(
                     colors: [Color(.systemBackground), Color(.secondarySystemBackground)],
                     startPoint: .top, endPoint: .bottom
                 )
                 .ignoresSafeArea()
+                .accessibilityHidden(true)
 
                 Form {
-                    // Time
-                    Section {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Select Time")
-                                .font(.headline)
+                    // MARK: Time
+                    TimeSchedulerView(selectedTime: $selectedTime)
 
-                            DatePicker("Time", selection: $selectedTime, displayedComponents: .hourAndMinute)
-                                .labelsHidden()
-                                .datePickerStyle(.wheel)
+                    // MARK: Days
+                    DaysSchedulerView(selectedDays: $selectedDays)
 
-                            Text("This reminder will repeat on the days you select below.")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        }
-                        .padding(.vertical, 4)
-                    }
-
-                    // Days (individually selectable with Toggle + custom style)
-                    Section {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Select Days")
-                                .font(.headline)
-
-                            LazyVGrid(
-                                columns: [
-                                    GridItem(.flexible(), spacing: 8),
-                                    GridItem(.flexible(), spacing: 8),
-                                    GridItem(.flexible(), spacing: 8)
-                                ],
-                                spacing: 8
-                            ) {
-                                ForEach(daysOfWeek, id: \.self) { day in
-                                    Toggle(day, isOn: Binding(
-                                        get: { selectedDays.contains(day) },
-                                        set: { isOn in
-                                            if isOn { selectedDays.insert(day) }
-                                            else { selectedDays.remove(day) }
-                                        }
-                                    ))
-                                    .toggleStyle(ChipToggleStyle())     // ← key change
-                                    .accessibilityLabel(day + (selectedDays.contains(day) ? ", selected" : ""))
-                                }
-                            }
-
-                            if selectedDays.isEmpty {
-                                Text("Tip: choose at least one day to schedule a repeating reminder.")
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        .padding(.vertical, 4)
-                    }
-
-                    // Actions
+                    // MARK: Actions
                     Section {
                         Button {
                             requestNotificationPermission()
@@ -92,6 +48,9 @@ struct NotificationSchedulerView: View {
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.borderedProminent)
+                        .accessibilityLabel("Schedule notifications")
+                        .accessibilityHint("Creates repeating reminders for the selected time and days.")
+                        .accessibilityIdentifier("Scheduler.ScheduleButton")
 
                         Button(role: .cancel) {
                             dismiss()
@@ -100,14 +59,22 @@ struct NotificationSchedulerView: View {
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.bordered)
+                        .accessibilityLabel("Cancel")
+                        .accessibilityHint("Close without scheduling.")
+                        .accessibilityIdentifier("Scheduler.CancelButton")
                     } footer: {
                         Text(summaryText)
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                             .padding(.top, 4)
+                            .accessibilityIdentifier("Scheduler.Summary")
+                            .accessibilityLabel("Summary")
+                            .accessibilityValue(summaryText)
                     }
                 }
                 .scrollContentBackground(.hidden)
+                .accessibilityLabel("Notification scheduler form")
+                .accessibilityHint("Set a time and select days for repeating reminders.")
             }
             .navigationTitle("Reminder Scheduler")
             .navigationBarTitleDisplayMode(.inline)
@@ -115,7 +82,6 @@ struct NotificationSchedulerView: View {
     }
 
     // MARK: - UI helpers
-
     private var summaryText: String {
         let timeString = formattedTime(selectedTime)
         if selectedDays.isEmpty {
@@ -140,8 +106,7 @@ struct NotificationSchedulerView: View {
         return ia < ib
     }
 
-    // MARK: - Original functionality (unchanged)
-
+    // MARK: - Request and Schedule
     private func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, error in
             if let error = error { print("Permission error: \(error)") }
@@ -177,8 +142,10 @@ struct NotificationSchedulerView: View {
     }
 }
 
+// MARK: - Chip Toggle Style (accessible)
 private struct ChipToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
+        // Button wrapper preserves tap target while we add explicit a11y below
         Button {
             configuration.isOn.toggle()
         } label: {
@@ -199,8 +166,12 @@ private struct ChipToggleStyle: ToggleStyle {
                 )
                 .foregroundStyle(configuration.isOn ? Color.accentColor : .primary)
         }
-        .buttonStyle(.plain) // important to avoid extra row selection behavior inside Form
+        .buttonStyle(.plain) // avoid extra row selection behavior inside Form
         .contentShape(Rectangle())
+        // A11y fallbacks for pre-iOS 17:
+               .accessibilityAddTraits(.isButton)
+               .accessibilityAddTraits(configuration.isOn ? .isSelected : [])
+               .accessibilityValue(configuration.isOn ? "Selected" : "Not selected")
     }
 }
 
