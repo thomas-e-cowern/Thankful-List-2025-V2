@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EraseAllDatButton: View {
+struct EraseAllDataButton: View {
     
     @Binding var showAlert: Bool
 
@@ -26,5 +26,5 @@ struct EraseAllDatButton: View {
 }
 
 #Preview {
-    EraseAllDatButton(showAlert: .constant(false))
+    EraseAllDataButton(showAlert: .constant(false))
 }
