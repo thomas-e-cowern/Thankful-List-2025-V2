@@ -12,6 +12,8 @@ struct AddThanksToolbar: ToolbarContent {
     @Binding var path: NavigationPath
     var icon: IconImages = .star
     var colorHex: String = "#007AFF"
+    
+    private let addThanksTip = AddThanksTip()
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -46,6 +48,7 @@ private struct AddThanksButton: View {
             Image(systemName: "plus")
                 .imageScale(.large)
         }
+        .popoverTip(AddThanksTip())
         .accessibilityLabel("Add new Thanks")
         .accessibilityHint("Opens the form to add a new gratitude entry.")
     }
