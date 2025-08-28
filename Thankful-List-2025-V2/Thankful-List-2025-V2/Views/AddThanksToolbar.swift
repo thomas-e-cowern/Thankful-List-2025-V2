@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 struct AddThanksToolbar: ToolbarContent {
     @Binding var path: NavigationPath
@@ -18,6 +19,7 @@ struct AddThanksToolbar: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             AddThanksButton(path: $path, icon: icon, colorHex: colorHex)
+                .popoverTip(addThanksTip)
         }
     }
 }
@@ -48,7 +50,7 @@ private struct AddThanksButton: View {
             Image(systemName: "plus")
                 .imageScale(.large)
         }
-        .popoverTip(AddThanksTip())
+        
         .accessibilityLabel("Add new Thanks")
         .accessibilityHint("Opens the form to add a new gratitude entry.")
     }
