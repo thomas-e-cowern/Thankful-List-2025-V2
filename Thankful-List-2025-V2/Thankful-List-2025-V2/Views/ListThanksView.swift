@@ -54,6 +54,16 @@ struct ListThanksView: View {
                         systemImage: "heart",
                         description: Text("Tap the + button to add a thanks")
                     )
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(Text("No thanks yet"))
+                    .accessibilityValue(Text("Tap the Add button to add a thanks"))
+                    .accessibilityHint(Text("Double-tap to start adding."))
+                    .accessibilityAddTraits(.isButton) // advertise it's actionable
+                    .accessibilityIdentifier("EmptyState.Thanks")
+                    .accessibilityAction(named: "Add a thanks") {
+                        // call your add handler here, e.g.:
+                        // isPresentingAddSheet = true
+                    }
                 }
             }
             .addThanksToolbar(path: $path)
