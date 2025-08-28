@@ -44,9 +44,7 @@ struct ListThanksView: View {
             .withSortToolbar(
                 selection: $sortOption,
                 labelForOption: { $0.label },
-                tip: nil    // or nil if you don't want a TipKit popover
             )
-            .popoverTip(addSortTip)
             .overlay {
                 if displayedThanks.isEmpty {
                     ContentUnavailableView(
