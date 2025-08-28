@@ -19,6 +19,12 @@ struct FavoritesView: View {
     @State private var searchText = ""
     @State private var sortOption: ThanksSortOption = .titleAsc
     
+    @State var favoritesViewTips = TipGroup {
+        AddThanksTip()
+        AddSortTip()
+        AddFavoritesTip()
+    }
+    
     private let addFavoritesTip = AddFavoritesTip()
     
     init(sort: SortDescriptor<Thanks>) {
@@ -44,9 +50,8 @@ struct FavoritesView: View {
             .withSortToolbar(
                 selection: $sortOption,
                 labelForOption: { $0.label },
-                tip: nil     // or nil if you don't want a TipKit popover
             )
-            .popoverTip(addFavoritesTip)
+            .popoverTip(favoritesViewTips.currentTip as? AddFavoritesTip)
             .overlay {
                 if displayedThanks.isEmpty {
                     ContentUnavailableView(
@@ -77,16 +82,16 @@ struct FavoritesView: View {
     
     // MARK: - Functions and Methods
     func deleteThanks(at offsets: IndexSet) {
-            for offset in offsets {
-                let thanks = thanks[offset]
-                modelContext.delete(thanks)
-                do {
-                    try modelContext.save()
-                } catch {
-                    print("Unable to delete thanks: \(error.localizedDescription)")
-                }
+        for offset in offsets {
+            let thanks = thanks[offset]
+            modelContext.delete(thanks)
+            do {
+                try modelContext.save()
+            } catch {
+                print("Unable to delete thanks: \(error.localizedDescription)")
             }
         }
+    }
     
 }
 

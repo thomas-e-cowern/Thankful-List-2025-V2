@@ -45,6 +45,7 @@ struct ListThanksView: View {
                 selection: $sortOption,
                 labelForOption: { $0.label },
             )
+//            .popoverTip(addSortTip)
             .overlay {
                 if displayedThanks.isEmpty {
                     ContentUnavailableView(

@@ -14,12 +14,12 @@ struct AddThanksToolbar: ToolbarContent {
     var icon: IconImages = .star
     var colorHex: String = "#007AFF"
     
-    private let addThanksTip = AddThanksTip()
+//    private let addThanksTip = AddThanksTip()
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             AddThanksButton(path: $path, icon: icon, colorHex: colorHex)
-                .popoverTip(addThanksTip)
+//                .popoverTip(addThanksTip)
         }
     }
 }

@@ -21,7 +21,6 @@ public struct SortToolbar<Option: CaseIterable & Hashable>: ToolbarContent {
         labelForOption: @escaping (Option) -> String,
         title: String = "Sort",
         systemImage: String = "arrow.up.arrow.down",
-        tip: (any Tip)? = nil
     ) {
         self._selection = selection
         self.labelForOption = labelForOption
@@ -89,15 +88,13 @@ public extension View {
         labelForOption: @escaping (Option) -> String,
         title: String = "Sort",
         systemImage: String = "arrow.up.arrow.down",
-        tip: (any Tip)? = nil
     ) -> some View {
         self.toolbar {
             SortToolbar(
                 selection: selection,
                 labelForOption: labelForOption,
                 title: title,
-                systemImage: systemImage,
-                tip: tip
+                systemImage: systemImage
             )
         }
     }

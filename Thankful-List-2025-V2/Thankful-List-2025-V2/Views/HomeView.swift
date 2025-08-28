@@ -12,6 +12,7 @@ struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var path = NavigationPath()
     @State private var showCommonExamples = false
+    @State private var isTipVisible = true
 
     private let addThanksTip = AddThanksTip()
 
@@ -28,7 +29,9 @@ struct HomeView: View {
 
                 ScrollView {
                     VStack(spacing: 20) {
-                        // App mark
+                        
+                        TipCardView(isTipVisible: $isTipVisible, tip: addThanksTip)
+                        
                         Image("Thanks")
                             .resizable()
                             .scaledToFit()
@@ -77,6 +80,7 @@ struct HomeView: View {
                             RoundedRectangle(cornerRadius: 20, style: .continuous)
                                 .strokeBorder(Color.gray.opacity(0.15))
                         )
+                        .popoverTip(addThanksTip)
 
                         // Gentle reminder
                         Text("There’s no right or wrong — anything you’re thankful for is valid.")
@@ -91,7 +95,9 @@ struct HomeView: View {
                     .padding(.bottom, 80)
                 }
             }
+            
             .navigationTitle("Home")
+            .popoverTip(addThanksTip, arrowEdge: .trailing)
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Thanks.self) { thank in
                 AddEditThanksView(navigationPath: $path, thanks: thank)
@@ -102,6 +108,7 @@ struct HomeView: View {
             }
             .addThanksToolbar(path: $path)
         }
+       
     }
 }
 

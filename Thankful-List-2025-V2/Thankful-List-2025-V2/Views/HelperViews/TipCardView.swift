@@ -10,14 +10,14 @@ import TipKit
 
 struct TipCardView: View {
     @Binding var isTipVisible: Bool
-    let tip: SettingsTip
+    let tip: any Tip
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         if isTipVisible {
             VStack(alignment: .leading, spacing: 12) {
-                TipView(tip)
+                TipView(tip, arrowEdge: .trailing)
                     .onAppear {
                         if !reduceMotion {
                             withAnimation(.spring(response: 0.32, dampingFraction: 0.88)) {
@@ -58,5 +58,5 @@ struct TipCardView: View {
 }
 
 #Preview {
-    TipCardView(isTipVisible: .constant(false), tip: SettingsTip())
+    TipCardView(isTipVisible: .constant(true), tip: SettingsTip())
 }

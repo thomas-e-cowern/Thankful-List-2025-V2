@@ -9,7 +9,7 @@ import Foundation
 import TipKit
 
 struct AddThanksTip: Tip {
-    var title: Text { Text("Click to add a Thanks") }
-    var message: Text? { Text("You can click here to add a Thanks from any view") }
+    var title: Text { Text("Click the + icon above to add a somthing you are thankful for") }
+    var message: Text? { Text("You can click the + to add a thanks from any view") }
     var image: Image? { Image(systemName: "pencil.circle") }
 }
