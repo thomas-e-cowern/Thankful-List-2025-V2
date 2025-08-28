@@ -19,29 +19,39 @@ struct HomeView: View {
     var body: some View {
         NavigationStack(path: $path) {
             ZStack {
-                // Soft background
+                // Decorative background
                 LinearGradient(
                     colors: [Color(.systemBackground), Color(.secondarySystemBackground)],
                     startPoint: .top,
                     endPoint: .bottom
                 )
                 .ignoresSafeArea()
+                .accessibilityHidden(true)
 
                 ScrollView {
                     VStack(spacing: 20) {
-                        
+
+                        // Tip card — announce briefly, hide if not visible
                         TipCardView(isTipVisible: $isTipVisible, tip: addThanksTip)
-                        
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Tip: Add a thanks")
+                            .accessibilityHint("Shows guidance to help you add your first entry.")
+                            .accessibilityHidden(!isTipVisible)
+                            .accessibilityIdentifier("Home.TipCard")
+
+                        // Logo is decorative (title conveys the app)
                         Image("Thanks")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 96, height: 96)
-                            .accessibilityLabel("Thankful List logo")
+                            .accessibilityHidden(true)
 
-                        // Headline
+                        // Headline (Rotor: Headings)
                         Text("Welcome to the Grateful List!")
                             .font(.largeTitle.bold())
                             .multilineTextAlignment(.center)
+                            .accessibilityHeading(.h1)
+                            .accessibilityIdentifier("Home.Headline")
 
                         // Subtitle / explainer
                         Text("Track the people, places, experiences, and things you’re grateful for — big or small.")
@@ -49,17 +59,21 @@ struct HomeView: View {
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
+                            .accessibilityIdentifier("Home.Subtitle")
 
                         // Focused content card
                         VStack(spacing: 16) {
                             Text("Not sure where to start?")
                                 .font(.headline)
                                 .multilineTextAlignment(.center)
+                                .accessibilityHeading(.h2)
+                                .accessibilityIdentifier("Home.StartHeading")
 
                             Text("Tap below to see common examples to spark ideas.")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)
+                                .accessibilityIdentifier("Home.StartSubhead")
 
                             Button {
                                 showCommonExamples.toggle()
@@ -71,14 +85,21 @@ struct HomeView: View {
                             }
                             .buttonStyle(.borderedProminent)
                             .controlSize(.large)
-                            .accessibilityHint("Opens a sheet with common gratitude ideas to help you get started.")
+                            .accessibilityLabel("Show common gratitude examples")
+                            .accessibilityHint("Opens a sheet with example ideas to help you begin.")
+                            .accessibilityIdentifier("Home.CommonExamplesButton")
                         }
                         .frame(maxWidth: .infinity)
                         .padding(20)
-                        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        .background(
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                .fill(.thinMaterial)
+                                .accessibilityHidden(true) // decorative
+                        )
                         .overlay(
                             RoundedRectangle(cornerRadius: 20, style: .continuous)
                                 .strokeBorder(Color.gray.opacity(0.15))
+                                .accessibilityHidden(true) // decorative
                         )
                         .popoverTip(addThanksTip)
 
@@ -88,30 +109,34 @@ struct HomeView: View {
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
+                            .accessibilityIdentifier("Home.Reminder")
                     }
                     .frame(maxWidth: 500)
                     .padding(.horizontal)
                     .padding(.top, 32)
                     .padding(.bottom, 80)
                 }
+                // Helpful: ensure VoiceOver reads main content before toolbar
+                .accessibilitySortPriority(1)
             }
-            
             .navigationTitle("Home")
-            .popoverTip(addThanksTip, arrowEdge: .trailing)
             .navigationBarTitleDisplayMode(.inline)
+            .popoverTip(addThanksTip, arrowEdge: .trailing)
             .navigationDestination(for: Thanks.self) { thank in
                 AddEditThanksView(navigationPath: $path, thanks: thank)
             }
             .sheet(isPresented: $showCommonExamples) {
                 CommonThanksView()
                     .presentationDetents([.large])
+                    .accessibilityAddTraits(.isModal)
+                    .accessibilityLabel("Common gratitude examples")
+                    .accessibilityHint("Swipe down or use the Close button to dismiss.")
             }
-            .addThanksToolbar(path: $path)
+            .addThanksToolbar(path: $path) // See note below
+            .accessibilityIdentifier("Home.View")
         }
-       
     }
 }
-
 #Preview {
     HomeView()
         .task {
