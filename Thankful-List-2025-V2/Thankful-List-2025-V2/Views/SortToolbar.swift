@@ -14,7 +14,7 @@ public struct SortToolbar<Option: CaseIterable & Hashable>: ToolbarContent {
     var labelForOption: (Option) -> String
     var title: String = "Sort"
     var systemImage: String = "arrow.up.arrow.down"
-    var tip: (any Tip)? = nil   // optional TipKit tip (pass nil if not needed)
+    var sortTip = AddSortTip()
 
     public init(
         selection: Binding<Option>,
@@ -27,7 +27,6 @@ public struct SortToolbar<Option: CaseIterable & Hashable>: ToolbarContent {
         self.labelForOption = labelForOption
         self.title = title
         self.systemImage = systemImage
-        self.tip = tip
     }
 
     public var body: some ToolbarContent {
@@ -78,7 +77,7 @@ public struct SortToolbar<Option: CaseIterable & Hashable>: ToolbarContent {
                     }
             }
             // Optional TipKit anchor stays on the label button
-            .popoverTip(tip)
+            .popoverTip(sortTip)
         }
     }
 }
